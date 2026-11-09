@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alex Valdivia · Build log</title>
+<meta name="description" content="Things Alex Valdivia is building: 3D-printed bearings, a printed bike wheel, and a robotic turn signal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f3f6f8; --grid:#d3e0ea; --grid-major:#b9cddc;
+  --ink:#16283a; --ink-soft:#4d6478; --line:#9fb6c8;
+  --tape:rgba(242,213,68,.72); --mark:#d8a400; --photo-bg:#ffffff;
+  --cut:#e2711d;
+  --c1:#e2711d; --c2:#2c8c99; --c3:#c99a06; --c4:#3b6ea5; --c5:#4c9a6a; --c6:#8a5fb0;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f2a44; --grid:#18395a; --grid-major:#24507a;
+    --ink:#e8f0f7; --ink-soft:#a9bfd3; --line:#4f7aa1;
+    --tape:rgba(242,213,68,.55); --mark:#f2d544; --photo-bg:#e8f0f7;
+    --cut:#f59a4a;
+    --c1:#f59a4a; --c2:#5cc4cf; --c3:#f2d544; --c4:#7fb0e6; --c5:#7fd19e; --c6:#c39be6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f2a44; --grid:#18395a; --grid-major:#24507a;
+  --ink:#e8f0f7; --ink-soft:#a9bfd3; --line:#4f7aa1;
+  --tape:rgba(242,213,68,.55); --mark:#f2d544; --photo-bg:#e8f0f7;
+  --cut:#f59a4a;
+  --c1:#f59a4a; --c2:#5cc4cf; --c3:#f2d544; --c4:#7fb0e6; --c5:#7fd19e; --c6:#c39be6;
+  color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;background-color:var(--paper);color:var(--ink);
+  background-image:
+    linear-gradient(var(--grid-major) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:120px 120px,120px 120px,24px 24px,24px 24px;
+  font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:1.0625rem;line-height:1.6;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration-color:var(--mark);text-decoration-thickness:3px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--mark);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.prose{max-width:66ch}
+.hand{font-family:"Kalam","Comic Sans MS",cursive;color:var(--ink-soft)}
+
+/* hero */
+.hero{padding:56px 0 24px}
+.hero h1{
+  font-stretch:125%;font-weight:800;font-size:clamp(2.6rem,7vw,5.2rem);
+  line-height:.95;letter-spacing:-.02em;margin:0 0 18px;max-width:14ch;
+}
+.hero .lede{font-size:1.25rem;max-width:44ch;margin:0 0 20px;color:var(--ink-soft)}
+.links{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0;padding:0;list-style:none;font-weight:600}
+.hero-shot{position:relative;margin:40px 0 0}
+.hero-shot img{border:1px solid var(--line);width:100%}
+.hero-shot .note{position:absolute;right:4%;bottom:-34px;font-size:1.35rem;transform:rotate(-3deg)}
+
+/* logs */
+section.log{padding:72px 0 8px}
+.log-head{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:baseline;margin-bottom:10px}
+.log-head .no{font-stretch:62%;font-weight:700;font-size:3.2rem;line-height:1;color:var(--line)}
+.log-head h2{font-stretch:110%;font-weight:750;font-size:clamp(1.6rem,3.4vw,2.3rem);line-height:1.1;margin:0}
+.log-head .status{grid-column:2;font-size:1.15rem}
+.log-head.plain{grid-template-columns:1fr}
+.log-head.plain .status{grid-column:1}
+.log p{margin:0 0 14px}
+
+.strip{display:grid;gap:34px 28px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin:34px 0 10px;align-items:start}
+.strip.wide{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+figure.photo{margin:0;background:var(--photo-bg);padding:10px 10px 6px;position:relative;
+  box-shadow:0 1px 0 var(--line),0 8px 18px -12px rgba(10,30,50,.45)}
+figure.photo:nth-child(3n+1){transform:rotate(-1.2deg)}
+figure.photo:nth-child(3n+2){transform:rotate(.9deg)}
+figure.photo:nth-child(3n){transform:rotate(-.4deg)}
+figure.photo::before{content:"";position:absolute;top:-11px;left:50%;width:84px;height:22px;margin-left:-42px;background:var(--tape);transform:rotate(-4deg)}
+figure.photo img{width:100%;height:auto}
+figure.photo figcaption{font-family:"Kalam","Comic Sans MS",cursive;color:#3c5266;font-size:1.05rem;line-height:1.3;padding:8px 2px 2px}
+figure.photo .step{font-weight:700;color:#16283a}
+
+/* viewer */
+.viewer{margin:34px 0 10px;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+.viewer canvas{display:block;width:100%;height:420px;touch-action:none}
+.viewer .controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:12px 0}
+.viewer label{font-weight:600}
+.viewer input[type=range]{flex:1;min-width:160px;accent-color:var(--cut)}
+.viewer .hint{width:100%;margin:0;font-size:.95rem;color:var(--ink-soft)}
+[hidden]{display:none !important}
+
+
+.hero-project{font-stretch:110%;font-weight:750;font-size:clamp(1.5rem,3.2vw,2.2rem);line-height:1.1;margin:48px 0 0}
+.hero-viewer{margin-top:8px;position:relative}
+.hero-viewer canvas{height:min(62vw,560px)}
+.wip{position:absolute;right:2%;top:14px;margin:0;font-size:1.3rem;transform:rotate(-2deg);max-width:22ch;text-align:right}
+.viewer{position:relative}
+.viewer .wip{top:12px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;list-style:none;margin:0;padding:0;width:100%;font-size:.95rem}
+.legend li{display:flex;align-items:center;gap:7px}
+.legend .sw{width:14px;height:14px;border:1.5px solid var(--ink);display:inline-block;background:var(--sw)}
+.viewer label{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;width:100%}
+.sub{font-stretch:110%;font-weight:700;font-size:1.35rem;margin:56px 0 8px}
+@media (max-width:600px){.wip{position:static;text-align:left;margin:6px 0 0;transform:none}}
+
+/* next + work */
+.next-list{margin:18px 0 0;padding-left:1.2em}
+.next-list li{margin-bottom:8px}
+.pipeline{margin:28px 0 8px;overflow-x:auto}
+.pipeline svg{min-width:640px;width:100%;height:auto}
+.pipeline .box{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.pipeline .diamond{fill:var(--paper);stroke:var(--cut);stroke-width:2}
+.pipeline text{fill:var(--ink);font-family:"Archivo",system-ui,sans-serif;font-size:14px}
+.pipeline .arrow{stroke:var(--ink-soft);stroke-width:1.5;fill:none}
+.pipeline .ah{fill:var(--ink-soft)}
+
+footer{padding:80px 0 56px}
+footer h2{font-stretch:110%;font-size:1.8rem;margin:0 0 10px}
+
+@media (max-width:600px){
+  .hero{padding-top:32px}
+  .hero-shot .note{position:static;display:block;margin-top:8px;transform:none}
+  .log-head .no{font-size:2.4rem}
+  .viewer canvas{height:320px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header class="hero">
+  <h1>Alex Valdivia, building things to see how they work</h1>
+  <p class="lede">I'm a mathematical engineer working in growth analytics. In my free time I design parts in Fusion 360, print them, break them, and print them again. This is the log so far.</p>
+  <ul class="links">
+    <li><a href="mailto:valditellez@outlook.com">Email me</a></li>
+    <li><a href="https://www.linkedin.com/in/alex-valdivia-136484170/">LinkedIn</a></li>
+    <li><a href="#work">What I build at work</a></li>
+  </ul>
+  <h2 class="hero-project">A fully 3D-printed, functioning bike</h2>
+  <div class="viewer hero-viewer" data-model="models/bike.bin" data-inline="model-bike" data-view="0.5,-0.28,1.75" data-fallback="hero-fallback" hidden>
+    <canvas aria-label="Ink drawing of my 3D-printed bike design. Drag to rotate, scroll or pinch to zoom."></canvas>
+    <p class="wip hand">work in progress: gears instead of a chain</p>
+    <div class="controls"><ul class="legend"></ul><p class="hint">Drag to rotate, scroll or pinch to zoom.</p></div>
+  </div>
+  <figure class="hero-shot" id="hero-fallback">
+    <img src="images/bike-cad.jpg" alt="Fusion 360 model of a bike with 3D-printed wheels and a gear train instead of a chain" width="1400" height="844">
+    <figcaption class="note hand">work in progress</figcaption>
+  </figure>
+</header>
+
+<section class="log" id="bike-wheel">
+  <div class="log-head">
+    <span class="no" aria-hidden="true">1</span>
+    <h2>A bike wheel, printed</h2>
+    <span class="status hand">wheel works, the rest of the bike is next</span>
+  </div>
+  <div class="prose">
+    <p>The wheel is the first part of the bike that's fully printed and working: the rim, a hub with its axle, and a separate tire. Slide the cut to see the wheel in cross-section.</p>
+  </div>
+  <div class="viewer" data-model="models/wheel.bin" data-inline="model-wheel" data-names='{"2":"Hub & axle","4":"Tire","5":"Rim"}' data-cut="y" data-cut-default="50" data-view="0.55,-0.3,1.1" data-fallback="wheel-fallback" hidden>
+    <canvas aria-label="Ink drawing of the printed bike wheel with an adjustable cut. Drag to rotate, scroll or pinch to zoom."></canvas>
+    <div class="controls">
+      <label>Cut through the wheel <input class="cut" type="range" min="0" max="100" value="50"></label>
+      <ul class="legend"></ul>
+      <p class="hint">Drag to rotate, scroll or pinch to zoom.</p>
+    </div>
+  </div>
+  <div class="strip">
+    <figure class="photo"><img src="images/wheel-v1-printing.jpg" alt="First wheel prototype with a honeycomb pattern printing in the Creality K1 Max" loading="lazy" width="1236" height="823"><figcaption><span class="step">v1.</span> Honeycomb version, printing.</figcaption></figure>
+    <figure class="photo"><img src="images/wheel-v1-section.jpg" alt="Fusion 360 cross section of the wheel hub showing the ring of bearing balls inside" loading="lazy" width="524" height="826"><figcaption><span class="step">v1.</span> Cross section in Fusion 360, with the bearing inside the hub.</figcaption></figure>
+    <figure class="photo"><img src="images/wheel-v2.jpg" alt="Second wheel prototype in grey with tree supports still attached" loading="lazy" width="520" height="604"><figcaption><span class="step">v2.</span> New spoke design, supports still on.</figcaption></figure>
+    <figure class="photo"><img src="images/wheel-tire.jpg" alt="Alex holding up a printed white tire" loading="lazy" width="1172" height="780"><figcaption><span class="step">Tire.</span> Printed as its own part.</figcaption></figure>
+    <figure class="photo"><img src="images/wheel-assembled.jpg" alt="Black printed rim fitted inside the white printed tire" loading="lazy" width="515" height="710"><figcaption><span class="step">Assembled.</span> Rim and tire together.</figcaption></figure>
+  </div>
+  <span id="wheel-fallback" hidden></span>
+
+  <h3 class="sub">The bearing inside</h3>
+  <div class="prose">
+    <p>Every bearing on the bike comes from one parametric component I designed in Fusion 360. I can change its dimensions and reuse it anywhere, from the hubs to the crank.</p>
+  </div>
+  <div class="viewer" data-model="models/bearing.bin" data-inline="model-bearing" data-cut="z" data-cut-default="62" data-view="0.5,-0.6,1.3" data-fallback="bearing-fallback" data-names='{"1":"Rollers","2":"Races"}' hidden>
+    <canvas aria-label="Ink drawing of my roller bearing with an adjustable cut. Drag to rotate, scroll or pinch to zoom."></canvas>
+    <div class="controls">
+      <label>Cut through the bearing <input class="cut" type="range" min="0" max="100" value="62"></label>
+      <ul class="legend"></ul>
+      <p class="hint">Push the slider all the way right to see the whole bearing.</p>
+    </div>
+  </div>
+  <span id="bearing-fallback" hidden></span>
+</section>
+
+<section class="log" id="turn-signal">
+  <div class="log-head">
+    <span class="no" aria-hidden="true">2</span>
+    <h2>A tiny hand that signals my turns</h2>
+    <span class="status hand">prototype working, refining it now</span>
+  </div>
+  <div class="prose">
+    <p>When I ride, I want people to know where I'm turning. So I'm building a small 3D-printed hand that points left or right, with a blinking LED.</p>
+    <p>Instead of just buying a ULN2003 stepper driver, I rebuilt one from scratch. That's how I learned to read electronic diagrams and what resistors, diodes, and capacitors actually do. Mine came out much bigger than the store-bought board, but it works, and an Arduino controls the whole thing.</p>
+  </div>
+  <div class="strip wide">
+    <figure class="photo"><img src="images/arduino-first-test.jpg" alt="Breadboard with a button and LED wired to an Arduino Uno" loading="lazy" width="1028" height="607"><figcaption><span class="step">Step 1.</span> First Arduino test: press a button, light the LED.</figcaption></figure>
+    <figure class="photo"><img src="images/arduino-motor-light.jpg" alt="Holding a small motor over a breadboard while the Arduino drives it and the LED" loading="lazy" width="1091" height="584"><figcaption><span class="step">Step 2.</span> Motor and light moving together.</figcaption></figure>
+    <figure class="photo"><img src="images/hand-first-print.jpg" alt="First print of the hand parts on the printer bed: fingers, a gear rack, a gear, and housings" loading="lazy" width="515" height="545"><figcaption><span class="step">Step 3.</span> First print of the hand: fingers, gear, and rack.</figcaption></figure>
+  </div>
+</section>
+
+<section class="log" id="chair-wheel">
+  <div class="log-head">
+    <span class="no" aria-hidden="true">3</span>
+    <h2>Where it started: a broken chair wheel</h2>
+    <span class="status hand">fixed, and still rolling</span>
+  </div>
+  <div class="prose">
+    <p>One of my chair's wheels broke, so instead of buying a new one I decided to print it. That meant designing my first bearing.</p>
+    <p>It took several attempts. Some versions broke, so each round I improved the bearing design and learned how to make the parts stronger, until one finally held. That's where the bearing in the bike comes from.</p>
+  </div>
+  <div class="viewer" data-model="models/chair.bin" data-inline="model-chair" data-view="0.35,-0.8,1.9" data-fallback="chair-fallback" data-names='{"0":"Caster body","2":"Bearing","4":"Tire","5":"Wheel"}' hidden>
+    <canvas aria-label="Ink drawing of the chair wheel parts laid out for printing. Drag to rotate, scroll or pinch to zoom."></canvas>
+    <p class="wip hand">all the parts, laid out the way they print</p>
+    <div class="controls"><ul class="legend"></ul><p class="hint">Drag to rotate, scroll or pinch to zoom.</p></div>
+  </div>
+  <span id="chair-fallback" hidden></span>
+  <div class="strip">
+    <figure class="photo"><img src="images/chair-wheel-broken.jpg" alt="Broken chair caster with glue around the base" loading="lazy" width="514" height="654"><figcaption><span class="step">Before.</span> The original wheel, broken at the base.</figcaption></figure>
+    <figure class="photo"><img src="images/bearing-assembly.jpg" alt="Printed bearing rings and steel balls laid out on a table during assembly" loading="lazy" width="513" height="739"><figcaption><span class="step">Bearings.</span> Putting races and balls together by hand.</figcaption></figure>
+    <figure class="photo"><img src="images/chair-wheel-printing.jpg" alt="Light blue wheel finishing on the Creality K1 Max printer bed" loading="lazy" width="1400" height="829"><figcaption><span class="step">Printing.</span> One of the replacement versions coming off the bed.</figcaption></figure>
+    <figure class="photo"><img src="images/chair-wheel-done.jpg" alt="Printed green and blue wheel mounted on the chair leg" loading="lazy" width="499" height="586"><figcaption><span class="step">After.</span> Back on the chair and doing its job.</figcaption></figure>
+  </div>
+</section>
+
+<section class="log" id="next">
+  <div class="log-head plain">
+    <h2>Up next</h2>
+  </div>
+  <div class="prose">
+    <ul class="next-list">
+      <li>Finish refining the hand.</li>
+      <li>Keep printing the rest of the bike from the model at the top.</li>
+      <li>A guitar that plays itself. I'm learning guitar so I can compete against it.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="log" id="work">
+  <div class="log-head plain">
+    <h2>What I build at work</h2>
+    <span class="status hand">Klar, growth team</span>
+  </div>
+  <div class="prose">
+    <p>At Klar, a fintech in Mexico City, I run the reengagement program for credit activation. When incentives stopped moving the number, I asked users why they hadn't activated, and 40% said they had a technical issue. So I built this:</p>
+  </div>
+  <div class="pipeline" role="img" aria-label="Pipeline: a daily dbt model picks users, an AI agent surveys them on WhatsApp, and if it detects a technical issue a human agent calls back at the user's best time.">
+    <svg viewBox="0 0 900 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+      <rect class="box" x="10" y="40" width="170" height="70" rx="4"/>
+      <text x="95" y="70" text-anchor="middle">dbt model picks</text><text x="95" y="90" text-anchor="middle">users each day</text>
+      <path class="arrow" d="M180 75 H228" marker-end="url(#ah)"/>
+      <rect class="box" x="232" y="40" width="190" height="70" rx="4"/>
+      <text x="327" y="70" text-anchor="middle">AI agent surveys</text><text x="327" y="90" text-anchor="middle">them on WhatsApp</text>
+      <path class="arrow" d="M422 75 H470" marker-end="url(#ah)"/>
+      <polygon class="diamond" points="560,15 650,75 560,135 470,75"/>
+      <text x="560" y="72" text-anchor="middle">Technical</text><text x="560" y="90" text-anchor="middle">issue?</text>
+      <path class="arrow" d="M650 75 H698" marker-end="url(#ah)"/>
+      <text x="672" y="65" text-anchor="middle" style="font-size:12px">yes</text>
+      <rect class="box" x="702" y="40" width="188" height="70" rx="4"/>
+      <text x="796" y="70" text-anchor="middle">Human agent calls</text><text x="796" y="90" text-anchor="middle">at the user's best time</text>
+    </svg>
+  </div>
+  <div class="prose">
+    <p>It's in soft launch with 9.5% incrementality, on track for about 2,000 extra activations a month. Along the way I connected Customer.io, Twilio, and Meta through their APIs so the whole growth team can see what each campaign costs, every day.</p>
+  </div>
+</section>
+
+<footer class="prose">
+  <h2>Say hi</h2>
+  <p>I'm always happy to talk about builds, bearings, or data. <a href="mailto:valditellez@outlook.com">valditellez@outlook.com</a> or <a href="https://www.linkedin.com/in/alex-valdivia-136484170/">LinkedIn</a>.</p>
+</footer>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  if (!window.THREE) return;
+  var NAMES = {"0":"Frame & body","1":"Rollers","2":"Bearings & hubs","3":"Gears","4":"Tires","5":"Rims","6":"Cranks & pedals"};
+  var PALETTE = ["--ink","--c1","--c2","--c3","--c4","--c5","--c6"];
+
+  function cssColor(name, dflt){
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim() || dflt;
+    return new THREE.Color(v);
+  }
+
+  function fetchModel(el){
+    var inline = document.getElementById(el.dataset.inline);
+    if (inline) {
+      var bin = atob(inline.textContent.trim()), bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return Promise.resolve(bytes.buffer);
+    }
+    return fetch(el.dataset.model).then(function(r){ if (!r.ok) throw new Error("missing"); return r.arrayBuffer(); });
+  }
+
+  // Binary layout written by the converter: quantized positions, int8 normals, uint16 indices per part.
+  function parse(buf){
+    var dv = new DataView(buf), o = 4;
+    var n = dv.getUint32(o, true); o += 4;
+    var lo = [], hi = [];
+    for (var k = 0; k < 3; k++) lo.push(dv.getFloat32(o + k * 4, true));
+    for (k = 0; k < 3; k++) hi.push(dv.getFloat32(o + 12 + k * 4, true));
+    o += 24;
+    var parts = [], totalV = 0, totalI = 0;
+    for (var p = 0; p < n; p++) {
+      var color = dv.getUint8(o), nv = dv.getUint32(o + 4, true), ni = dv.getUint32(o + 8, true); o += 12;
+      var q = new Uint16Array(buf, o, nv * 3); o += nv * 6;
+      var nr = new Int8Array(buf, o, nv * 3); o += nv * 3; o = (o + 3) & ~3;
+      var idx = new Uint16Array(buf, o, ni); o += ni * 2; o = (o + 3) & ~3;
+      parts.push({color:color, q:q, nr:nr, idx:idx}); totalV += nv; totalI += ni;
+    }
+    var pos = new Float32Array(totalV * 3), nor = new Float32Array(totalV * 3), info = new Float32Array(totalV * 2);
+    var index = new Uint32Array(totalI), vo = 0, io = 0, colors = {};
+    parts.forEach(function(part, pi){
+      var nv = part.q.length / 3;
+      for (var i = 0; i < nv; i++) {
+        for (var a = 0; a < 3; a++) {
+          pos[(vo + i) * 3 + a] = lo[a] + part.q[i * 3 + a] / 65535 * (hi[a] - lo[a]);
+          nor[(vo + i) * 3 + a] = part.nr[i * 3 + a] / 127;
+        }
+        info[(vo + i) * 2] = pi % 120; info[(vo + i) * 2 + 1] = part.color;
+      }
+      for (i = 0; i < part.idx.length; i++) index[io + i] = part.idx[i] + vo;
+      vo += nv; io += part.idx.length; colors[part.color] = true;
+    });
+    var g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    g.setAttribute("normal", new THREE.BufferAttribute(nor, 3));
+    g.setAttribute("info", new THREE.BufferAttribute(info, 2));
+    g.setIndex(new THREE.BufferAttribute(index, 1));
+    return {geometry:g, colors:Object.keys(colors).map(Number).sort()};
+  }
+
+  // Pass 1 stores normal (rg), color group (b) and part id (a; odd = cut face) per pixel.
+  var GBUF_VS = [
+    "#include <clipping_planes_pars_vertex>",
+    "attribute vec2 info; varying vec3 vN; varying vec2 vInfo;",
+    "void main(){",
+    "  vN = normalize(normalMatrix * normal); vInfo = info;",
+    "  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);",
+    "  gl_Position = projectionMatrix * mvPosition;",
+    "  #include <clipping_planes_vertex>",
+    "}"].join("\n");
+  var GBUF_FS = [
+    "#include <clipping_planes_pars_fragment>",
+    "varying vec3 vN; varying vec2 vInfo;",
+    "void main(){",
+    "  #include <clipping_planes_fragment>",
+    "  float id = floor(vInfo.x + 0.5) * 2.0 + 2.0;",
+    "  float col = floor(vInfo.y + 0.5) / 255.0;",
+    "  if (!gl_FrontFacing) { gl_FragColor = vec4(0.5, 0.5, col, (id + 1.0) / 255.0); return; }",
+    "  vec3 n = normalize(vN);",
+    "  gl_FragColor = vec4(n.xy * 0.5 + 0.5, col, id / 255.0);",
+    "}"].join("\n");
+
+  // Pass 2 draws ink lines, colored-pencil washes, pencil shading and section hatching.
+  var INK_VS = "varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }";
+  var INK_FS = [
+    "uniform sampler2D tN; uniform sampler2D tD;",
+    "uniform vec2 res; uniform float px, near, far;",
+    "uniform vec3 paper; uniform vec3 pal[7];",
+    "varying vec2 vUv;",
+    "float lin(float d){ float z = d * 2.0 - 1.0; return 2.0 * near * far / (far + near - z * (far - near)); }",
+    "float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }",
+    "float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);",
+    "  return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }",
+    "vec3 nrm(vec4 c){ vec2 xy = c.rg * 2.0 - 1.0; return vec3(xy, sqrt(max(0.0, 1.0 - dot(xy, xy)))); }",
+    "bool edgeAt(vec2 uv, vec4 c, float dc, vec2 o){",
+    "  vec4 n = texture2D(tN, uv + o);",
+    "  if (abs(n.a - c.a) > 0.5 / 255.0) return true;",
+    "  if (c.a < 0.5 / 255.0) return false;",
+    "  if (length(nrm(n) - nrm(c)) > 0.4) return true;",
+    "  float dn = lin(texture2D(tD, uv + o).x);",
+    "  return abs(dn - dc) / dc > 0.025;",
+    "}",
+    "vec3 palette(float b){ int ci = int(floor(b * 255.0 + 0.5)); vec3 r = pal[0];",
+    "  for (int i = 0; i < 7; i++) { if (i == ci) r = pal[i]; } return r; }",
+    "void main(){",
+    "  vec2 fc = gl_FragCoord.xy;",
+    "  vec2 wob = vec2(noise(fc * 0.04), noise(fc * 0.04 + 17.0)) - 0.5;",
+    "  vec2 uv = vUv + wob * 2.0 * px / res;",
+    "  vec4 c = texture2D(tN, uv); float dc = lin(texture2D(tD, uv).x);",
+    "  vec2 s = px / res;",
+    "  float grain = 0.75 + 0.25 * noise(fc * 0.6);",
+    "  bool e = edgeAt(uv, c, dc, vec2(s.x, 0.0)) || edgeAt(uv, c, dc, vec2(-s.x, 0.0)) ||",
+    "           edgeAt(uv, c, dc, vec2(0.0, s.y)) || edgeAt(uv, c, dc, vec2(0.0, -s.y));",
+    "  if (e) { float a = 0.95 * grain; gl_FragColor = vec4(pal[0] * a, a); return; }",
+    "  if (c.a < 0.5 / 255.0) { gl_FragColor = vec4(0.0); return; }",
+    "  float id = floor(c.a * 255.0 + 0.5);",
+    "  bool colored = c.b > 0.5 / 255.0;",
+    "  vec3 tint = palette(c.b);",
+    "  vec3 base = colored ? mix(paper, tint, 0.28) : paper;",
+    "  if (mod(id, 2.0) > 0.5) {",
+    "    float h = mod(fc.x + fc.y * (colored ? 1.0 : -1.0), 6.0 * px);",
+    "    float a = h < 1.1 * px ? 0.9 * grain : 0.0;",
+    "    gl_FragColor = vec4(mix(base, colored ? tint : pal[0], a), 1.0); return; }",
+    "  vec3 n = nrm(c);",
+    "  float shade = 1.0 - clamp(dot(n, normalize(vec3(0.4, 0.7, 0.6))), 0.0, 1.0);",
+    "  float stroke = mod(fc.x - fc.y * 0.35, 5.0 * px) < 0.9 * px ? 1.0 : 0.0;",
+    "  float s2 = smoothstep(0.45, 1.0, shade) * 0.45 * stroke * grain;",
+    "  gl_FragColor = vec4(mix(base, pal[0], s2), 1.0);",
+    "}"].join("\n");
+
+  function legend(el, colors){
+    var ul = el.querySelector(".legend"); if (!ul) return;
+    var names = el.dataset.names ? JSON.parse(el.dataset.names) : NAMES;
+    ul.innerHTML = "";
+    colors.forEach(function(c){
+      var li = document.createElement("li"), sw = document.createElement("span");
+      sw.className = "sw";
+      sw.style.setProperty("--sw", c === 0 ? "var(--paper)" : "color-mix(in srgb, var(" + PALETTE[c] + ") 55%, var(--paper))");
+      li.appendChild(sw); li.appendChild(document.createTextNode(names[c] || NAMES[c]));
+      ul.appendChild(li);
+    });
+  }
+
+  function start(el, model){
+    var canvas = el.querySelector("canvas");
+    var renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:false, alpha:true});
+    var px = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(px);
+    renderer.localClippingEnabled = true;
+    renderer.setClearColor(0x000000, 0);
+
+    var geo = model.geometry;
+    geo.computeBoundingBox();
+    var center = new THREE.Vector3(), size = new THREE.Vector3();
+    geo.boundingBox.getCenter(center); geo.boundingBox.getSize(size);
+    geo.translate(-center.x, -center.y, -center.z);
+    var radius = size.length() / 2;
+
+    var view = (el.dataset.view || "0.5,-0.4,1").split(",").map(Number);
+    var rotY = view[0], rotX = view[1], dist = radius * 4.0 / (view[2] || 1);
+    var camera = new THREE.PerspectiveCamera(30, 1, radius / 30, radius * 30);
+
+    // The model is Z-up from Fusion; the scene is Y-up.
+    var axes = {x:[1,0,0], y:[0,0,-1], z:[0,1,0]};
+    var axis = el.dataset.cut, plane = null, half = 0;
+    if (axis) {
+      var a = axes[axis];
+      // Keep the half away from the camera, so the cut face looks at the viewer.
+      var c0 = [Math.sin(rotY) * Math.cos(rotX), -Math.sin(rotX), Math.cos(rotY) * Math.cos(rotX)];
+      var sgn = (a[0] * c0[0] + a[1] * c0[1] + a[2] * c0[2]) >= 0 ? 1 : -1;
+      plane = new THREE.Plane(new THREE.Vector3(-a[0] * sgn, -a[1] * sgn, -a[2] * sgn), 0);
+      half = size[axis] / 2;
+    }
+    var mat = new THREE.ShaderMaterial({
+      vertexShader: GBUF_VS, fragmentShader: GBUF_FS,
+      side: THREE.DoubleSide, clipping: !!plane, clippingPlanes: plane ? [plane] : [],
+      blending: THREE.NoBlending
+    });
+    var mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = -Math.PI / 2;
+    var scene = new THREE.Scene(); scene.add(mesh);
+
+    var target = new THREE.WebGLRenderTarget(1, 1, {
+      minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter,
+      format: THREE.RGBAFormat, type: THREE.UnsignedByteType
+    });
+    target.depthTexture = new THREE.DepthTexture();
+    target.depthTexture.type = THREE.UnsignedIntType;
+
+    var pal = PALETTE.map(function(){ return new THREE.Color(); });
+    var inkMat = new THREE.ShaderMaterial({
+      vertexShader: INK_VS, fragmentShader: INK_FS,
+      uniforms: {
+        tN: {value: target.texture}, tD: {value: target.depthTexture},
+        res: {value: new THREE.Vector2(1, 1)}, px: {value: px},
+        near: {value: camera.near}, far: {value: camera.far},
+        paper: {value: new THREE.Color()}, pal: {value: pal}
+      },
+      depthTest: false, depthWrite: false, transparent: true,
+      blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor
+    });
+    var inkScene = new THREE.Scene(), inkCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    inkScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), inkMat));
+
+    function place(){
+      camera.position.set(dist * Math.sin(rotY) * Math.cos(rotX), -dist * Math.sin(rotX), dist * Math.cos(rotY) * Math.cos(rotX));
+      camera.lookAt(0, 0, 0);
+    }
+    function resize(){
+      var w = canvas.clientWidth, h = canvas.clientHeight;
+      renderer.setSize(w, h, false);
+      target.setSize(Math.round(w * px), Math.round(h * px));
+      inkMat.uniforms.res.value.set(Math.round(w * px), Math.round(h * px));
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+    }
+    var queued = false;
+    function draw(){ if (queued) return; queued = true; requestAnimationFrame(render); }
+    function render(){
+      queued = false; place();
+      inkMat.uniforms.paper.value.copy(cssColor("--paper", "#f3f6f8"));
+      PALETTE.forEach(function(v, i){ pal[i].copy(cssColor(v, "#16283a")); });
+      renderer.setRenderTarget(target); renderer.clear(); renderer.render(scene, camera);
+      renderer.setRenderTarget(null); renderer.clear(); renderer.render(inkScene, inkCam);
+    }
+
+    var dragging = false, lx = 0, ly = 0, pinch = 0;
+    canvas.addEventListener("pointerdown", function(e){ dragging = true; lx = e.clientX; ly = e.clientY; canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener("pointermove", function(e){
+      if (!dragging) return;
+      rotY -= (e.clientX - lx) * 0.01;
+      rotX = Math.max(-1.4, Math.min(1.4, rotX + (e.clientY - ly) * 0.01));
+      lx = e.clientX; ly = e.clientY; draw();
+    });
+    canvas.addEventListener("pointerup", function(){ dragging = false; });
+    canvas.addEventListener("wheel", function(e){
+      e.preventDefault();
+      dist = Math.max(radius * 0.6, Math.min(radius * 8, dist * (1 + e.deltaY * 0.001))); draw();
+    }, {passive:false});
+    canvas.addEventListener("touchmove", function(e){
+      if (e.touches.length !== 2) return;
+      var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      if (pinch) { dist = Math.max(radius * 0.6, Math.min(radius * 8, dist * pinch / d)); draw(); }
+      pinch = d;
+    }, {passive:true});
+    canvas.addEventListener("touchend", function(){ pinch = 0; });
+
+    var cut = el.querySelector(".cut");
+    if (cut && plane) {
+      var setCut = function(){ plane.constant = -half + (cut.value / 100) * (half * 2 + 0.2); draw(); };
+      cut.addEventListener("input", setCut); setCut();
+    }
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(prefers-color-scheme: dark)");
+      if (mq.addEventListener) mq.addEventListener("change", draw);
+    }
+    window.addEventListener("resize", function(){ resize(); draw(); });
+    resize(); draw();
+  }
+
+  function init(el){
+    fetchModel(el).then(function(buf){
+      var model = parse(buf);
+      el.hidden = false;
+      var fb = document.getElementById(el.dataset.fallback); if (fb) fb.hidden = true;
+      legend(el, model.colors);
+      start(el, model);
+    }).catch(function(){ /* keep the photos */ });
+  }
+
+  var viewers = [].slice.call(document.querySelectorAll(".viewer[data-model]"));
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting) { io.unobserve(en.target); init(en.target.__viewer); } });
+    }, {rootMargin: "600px 0px"});
+    viewers.forEach(function(el){
+      var anchor = el.previousElementSibling || el.parentNode;
+      anchor.__viewer = el; el.__anchor = anchor; io.observe(anchor);
+    });
+  } else viewers.forEach(init);
+})();
+</script>
+</body>
+</html>
